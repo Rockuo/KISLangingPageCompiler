@@ -1,16 +1,36 @@
 const Twig = require('twig');
 const fs = require('fs');
+const showdown  = require('showdown');
+
+let converter = new showdown.Converter();
 
 
-const csText = JSON.parse(fs.readFileSync('./KIS_ToS_cs.json', 'utf8'));
+const csObject = JSON.parse(fs.readFileSync('./KIS_ToS_cs.json', 'utf8'));
 Twig.renderFile('./template.twig', {
     lang: 'cs',
-    title: csText.title,
-    head: csText.head,
-    conntent: generateContent(csText.content)
+    title: csObject.title,
+    head: csObject.head,
+    conntent: generateContent(csObject.content)
 }, (err, html) => {
 
-    fs.writeFile("./compiledCZ.html", html, function (err) {
+    fs.writeFile("./compiledCS_json.html", html, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+
+        console.log("FINISHED");
+    });
+});
+
+const csMarkdown = fs.readFileSync('./KIS_ToS_cs.md', 'utf8');
+Twig.renderFile('./template.twig', {
+    lang: 'cs',
+    title: 'Kachna IS',
+    head: 'Kachna IS',
+    conntent: converter.makeHtml(csMarkdown)
+}, (err, html) => {
+
+    fs.writeFile("./compiledCS_md.html", html, function (err) {
         if (err) {
             return console.log(err);
         }

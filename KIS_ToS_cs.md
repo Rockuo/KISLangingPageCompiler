@@ -1,5 +1,3 @@
-# Kachna IS
-
 ## Pravidla používání služby
 
 ### Uživatelé služby
